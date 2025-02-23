@@ -65,19 +65,19 @@ export const getListOfLeagueSeasons = async (browser, leagueUrl) => {
 };
 
 export const getMatchIdList = async (browser, leagueSeasonUrl) => {
-  const page = await openPageAndNavigate(browser, `${leagueSeasonUrl}/results`);
+  const page = await openPageAndNavigate(browser, `${leagueSeasonUrl}`);
 
-  while (true) {
-    try {
-      await waitAndClick(page, 'a.event__more.event__more--static');
-    } catch (error) {
-      break;
-    }
-  }
+  // while (true) {
+  //   try {
+  //     await waitAndClick(page, 'a.event__more.event__more--static');
+  //   } catch (error) {
+  //     break;
+  //   }
+  // }
 
   await page.waitForSelector('.event__match.event__match--static.event__match--twoLine', { timeout: TIMEOUT_FAST });
   const matchIdList = await page.evaluate(() => {
-    return Array.from(document.querySelectorAll('.event__match.event__match--static.event__match--twoLine')).map((element) => {
+    return Array.from(document.querySelectorAll('.event__match.event__match--live.event__match--twoLine')).map((element) => {
       return element?.id?.replace('g_1_', '');
     });
   });
